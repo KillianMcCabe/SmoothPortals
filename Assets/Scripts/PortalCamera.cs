@@ -15,18 +15,19 @@ public class PortalCamera : MonoBehaviour {
 	
 	// Each frame reposition the camera to mimic the players offset from the other portals position
 	void Update () {
-        var portalPos = portal.transform.position;
-        var otherPortalPos = otherPortal.transform.position;
-        var playerCameraPos = playerCamera.transform.position;
+		Vector3 portalPos = portal.transform.position;
+		Vector3 otherPortalPos = otherPortal.transform.position;
+		Vector3 playerCameraPos = playerCamera.transform.position;
 
         // adjust position of camera
-        var playerOffsetFromPortal = playerCameraPos - otherPortalPos;
+		Vector3 playerOffsetFromPortal = playerCameraPos - otherPortalPos;
         transform.position = portalPos + playerOffsetFromPortal;
 
         // adjust rotation of camera
-        var anglarDifferenceBetweenPortalRotations = Quaternion.Angle(portal.transform.rotation, otherPortal.transform.rotation);
-        var portalRotationalDifference = Quaternion.AngleAxis(anglarDifferenceBetweenPortalRotations, Vector3.up);
-        var newFacing = portalRotationalDifference * playerCamera.transform.forward;
-        transform.rotation = Quaternion.LookRotation(newFacing, Vector3.up);
+		float anglarDifferenceBetweenPortalRotations = Quaternion.Angle(portal.transform.rotation, otherPortal.transform.rotation);
+
+		Quaternion portalRotationalDifference = Quaternion.AngleAxis(anglarDifferenceBetweenPortalRotations, Vector3.up);
+		Vector3 newFacingDirection = portalRotationalDifference * playerCamera.transform.forward;
+		transform.rotation = Quaternion.LookRotation(newFacingDirection, Vector3.up);
     }
 }
