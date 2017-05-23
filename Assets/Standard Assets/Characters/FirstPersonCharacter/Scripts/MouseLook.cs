@@ -72,6 +72,12 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 InternalLockUpdate();
         }
 
+        public void Rotate(Quaternion q)
+        {
+            m_CharacterTargetRot *= q;
+            //m_CameraTargetRot
+        }
+
         private void InternalLockUpdate()
         {
             if(Input.GetKeyUp(KeyCode.Escape))
