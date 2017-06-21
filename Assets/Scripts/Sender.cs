@@ -30,26 +30,17 @@ public class Sender : MonoBehaviour {
     // transport player to the equivalent position in the other portal
     private void teleport()
     {
-        float rotDiff = -Quaternion.Angle(transform.rotation, receiver.transform.rotation);
-        rotDiff += 180;
-        //player.transform.Rotate(Vector3.up, rotDiff); // I dont think this is working
+        // get relative difference between two rotations (i.e. the quaternion that would turn this rotation into that rotation)
+        // so say we want diff which multiplying q1 by would give us q2 then..
+        // diff* q1 = q2--->diff = q2 * inverse(q1)
+        Quaternion relativeDiff = receiver.transform.rotation * Quaternion.Inverse(transform.rotation);
+        relativeDiff *= Quaternion.Euler(0, 180, 0);
         
-
         Vector3 positionOffset = player.transform.position - transform.position;
-        positionOffset = Quaternion.Euler(0, rotDiff, 0) * positionOffset;
-
-        // dont forget that the two portals might not share the same rotation
-        Quaternion relative = Quaternion.Inverse(transform.rotation) * receiver.transform.rotation; // get relative difference between two rotations
-        Quaternion relative2 = Quaternion.Inverse(receiver.transform.rotation) * transform.rotation; // get relative difference between two rotations
-
-        Quaternion q = Quaternion.Euler(0, -rotDiff, 0);
-
-        //player.GetComponent<UnityStandardAssets.Characters.FirstPerson.FirstPersonController>().Rotate(q);
-
-        //positionOffset = relative * positionOffset;
-        player.transform.position = receiver.transform.position + positionOffset;
+        positionOffset = relativeDiff * positionOffset;
+        player.GetComponent<UnityStandardAssets.Characters.FirstPerson.FirstPersonController>().Rotate(relativeDiff);
         
-        //player.transform.rotation *= relative;
+        player.transform.position = receiver.transform.position + positionOffset;
     }
 
 

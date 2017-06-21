@@ -75,7 +75,6 @@ namespace UnityStandardAssets.Characters.FirstPerson
         public void Rotate(Quaternion q)
         {
             m_CharacterTargetRot *= q;
-            //m_CameraTargetRot
         }
 
         private void InternalLockUpdate()
