@@ -17,14 +17,16 @@ public class TextureSetup : MonoBehaviour {
         {
             camera1.targetTexture.Release();
         }
-        camera1.targetTexture = new RenderTexture(Screen.width, Screen.height, 24);
+        //camera1.targetTexture = new RenderTexture(Screen.width, Screen.height, 24);
+		camera1.targetTexture = new RenderTexture(2048, 2048, 24);
         camera1Mat.mainTexture = camera1.targetTexture;
 
         if (camera2.targetTexture != null)
         {
             camera2.targetTexture.Release();
         }
-        camera2.targetTexture = new RenderTexture(Screen.width, Screen.height, 24);
+        //camera2.targetTexture = new RenderTexture(Screen.width, Screen.height, 24);
+		camera2.targetTexture = new RenderTexture(2048, 2048, 24);
         camera2Mat.mainTexture = camera2.targetTexture;
         
     }
