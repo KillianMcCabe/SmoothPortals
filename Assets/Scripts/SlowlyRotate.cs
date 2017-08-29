@@ -11,7 +11,7 @@ public class SlowlyRotate : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
         transform.Rotate(0, rotSpeed * Time.deltaTime, 0);
 	}
 }

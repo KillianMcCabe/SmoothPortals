@@ -14,7 +14,8 @@ public class PortalCamera : MonoBehaviour {
 	}
 	
 	// Each frame reposition the camera to mimic the players offset from the other portals position
-	void Update () {
+	void LateUpdate () {
+		
 		Vector3 portalPos = portal.transform.position;
 		Vector3 otherPortalPos = otherPortal.transform.position;
 		Vector3 playerCameraPos = playerCamera.transform.position;

@@ -12,7 +12,7 @@ public class Sender : MonoBehaviour {
     void Start () {
     }
 
-    void Update()
+    void FixedUpdate()
     {
         if (playerOverlapping) {
             var currentDot = Vector3.Dot(transform.up, player.transform.position - transform.position);
@@ -28,7 +28,7 @@ public class Sender : MonoBehaviour {
     }
 
     // transport player to the equivalent position in the other portal
-    private void teleport()
+	private void teleport()
     {
         // get relative difference between two rotations (i.e. the quaternion that would turn this rotation into that rotation)
         // so say we want diff which multiplying q1 by would give us q2 then..
