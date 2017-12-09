@@ -21,17 +21,19 @@ public class PortalCamera : MonoBehaviour {
     void Start () {
         camera = GetComponent<Camera>();
     }
-	
-	// Each frame reposition the camera to mimic the players offset from the other portals position
-	void Update () {
-		Vector3 portalPos = portal.transform.position;
-		Vector3 otherPortalPos = otherPortal.transform.position;
-		Vector3 playerCameraPos = playerCamera.transform.position;
-        
-		float anglarDifferenceBetweenPortalRotations = Quaternion.Angle(portal.transform.rotation, otherPortal.transform.rotation);
-		Quaternion portalRotationalDifference = Quaternion.AngleAxis(anglarDifferenceBetweenPortalRotations, Vector3.up);
 
-        //Quaternion relative = Quaternion.Inverse(portal.transform.rotation) * otherPortal.transform.rotation; // get relative difference between two rotations
+    // Each frame reposition the camera to mimic the players offset from the other portals position
+    // Each frame reposition the camera to mimic the players offset from the other portals position
+    void LateUpdate()
+    {
+
+        Vector3 portalPos = portal.transform.position;
+        Vector3 otherPortalPos = otherPortal.transform.position;
+        Vector3 playerCameraPos = playerCamera.transform.position;
+
+        float anglarDifferenceBetweenPortalRotations = Quaternion.Angle(portal.transform.rotation, otherPortal.transform.rotation);
+        Quaternion portalRotationalDifference = Quaternion.AngleAxis(anglarDifferenceBetweenPortalRotations, Vector3.up);
+        
         Quaternion relative = Quaternion.Inverse(otherPortal.transform.rotation) * portal.transform.rotation; // get relative difference between two rotations
 
         // adjust position of camera
@@ -39,15 +41,14 @@ public class PortalCamera : MonoBehaviour {
         playerOffsetFromPortal = relative * playerOffsetFromPortal;
         transform.position = portalPos + playerOffsetFromPortal;
 
-        // adjust rotation of camera
-        //Vector3 newFacingDirection = relative * playerCamera.transform.forward;
-        //transform.rotation = Quaternion.LookRotation(newFacingDirection, Vector3.up);
+        // adjust rotation of camera to mimic portal rotation
+        transform.rotation = otherPortal.transform.rotation;
 
         // adjust near clipping plane to coincide with the portal render plane
-		CullCameraFrustum();
+        CullCameraFrustum();
     }
 
-	void CullCameraFrustum () {
+    void CullCameraFrustum () {
 		Vector3 pa, pb, pc, pd;
 		//pa = Corners[0].position; //Bottom-Left
 		//pb = Corners[1].position; //Bottom-Right
