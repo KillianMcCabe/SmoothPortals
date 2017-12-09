@@ -10,6 +10,16 @@ public class PortalCamera : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+        if (playerCamera == null)
+        {
+            // if no reference is set up then we will try to find it
+            playerCamera = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<Camera>().gameObject; ;
+            if (playerCamera == null)
+            {
+                print("cannot find player camera");
+            }
+            
+        }
 	
 	}
 	
@@ -19,20 +29,16 @@ public class PortalCamera : MonoBehaviour {
 		Vector3 portalPos = portal.transform.position;
 		Vector3 otherPortalPos = otherPortal.transform.position;
 		Vector3 playerCameraPos = playerCamera.transform.position;
-        
-		float anglarDifferenceBetweenPortalRotations = Quaternion.Angle(portal.transform.rotation, otherPortal.transform.rotation);
-		Quaternion portalRotationalDifference = Quaternion.AngleAxis(anglarDifferenceBetweenPortalRotations, Vector3.up);
 
-        //Quaternion relative = Quaternion.Inverse(portal.transform.rotation) * otherPortal.transform.rotation; // get relative difference between two rotations
-        Quaternion relative = Quaternion.Inverse(otherPortal.transform.rotation) * portal.transform.rotation; // get relative difference between two rotations
+        // adjust rotation of camera
+        Quaternion differenceInPortalRotations = Quaternion.Inverse(otherPortal.transform.rotation) * portal.transform.rotation; // calculate quaternion needed to rotate between one portal and the other
+        Vector3 newFacingDirection = differenceInPortalRotations * playerCamera.transform.forward;
+        transform.rotation = Quaternion.LookRotation(newFacingDirection, Vector3.up);
 
         // adjust position of camera
         Vector3 playerOffsetFromPortal = playerCameraPos - otherPortalPos;
-        playerOffsetFromPortal = relative * playerOffsetFromPortal;
+        playerOffsetFromPortal = differenceInPortalRotations * playerOffsetFromPortal;
         transform.position = portalPos + playerOffsetFromPortal;
-
-        // adjust rotation of camera
-        Vector3 newFacingDirection = relative * playerCamera.transform.forward;
-        transform.rotation = Quaternion.LookRotation(newFacingDirection, Vector3.up);
+        
     }
 }
