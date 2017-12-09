@@ -6,7 +6,8 @@ public class PortalCamera : MonoBehaviour {
     public GameObject playerCamera;
     public GameObject portal;
     public GameObject otherPortal;
-    
+    public MeshRenderer renderPlane;
+    public Shader portalShader;
 
     // Use this for initialization
     void Start () {
@@ -18,10 +19,18 @@ public class PortalCamera : MonoBehaviour {
             {
                 print("cannot find player camera");
             }
-            
         }
-	
-	}
+
+        // setup cameras and textures
+        var camera = GetComponent<Camera>();
+        if (camera.targetTexture != null)
+            camera.targetTexture.Release();
+
+        camera.targetTexture = new RenderTexture(Screen.width, Screen.height, 24);
+
+        renderPlane.material = new Material(portalShader);
+        renderPlane.material.mainTexture = camera.targetTexture;
+    }
 	
 	// Each frame reposition the camera to mimic the players offset from the other portals position
 	void LateUpdate () {
